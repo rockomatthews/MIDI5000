@@ -199,23 +199,16 @@ void loop() {
   currentButton3State = digitalRead(button3_Pin); // read new state
   
   
-  if(lastButton3State == HIGH && currentButton3State == LOW) {
-    Serial.println("The button is active");
-
-    // toggle state of LED
+  if (lastButton3State == HIGH && currentButton3State == HIGH) {
     led3State = !led3State;
-
-    // control LED arccoding to the toggled state
     digitalWrite(LED3_PIN, led3State);
-    
-    if (led3State == HIGH) {
-      AppleMIDI.sendControlChange(87, 127, 13);
-      } else {
-        AppleMIDI.sendControlChange(87, 0, 13);
-        Serial.println("The button is not active");
-    }
-    delay(100);
-  }
+    AppleMIDI.sendControlChange(87, 127, 13);
+    Serial.println("The button is active");  
+   } else {
+      Serial.println("The button is not active");  
+      AppleMIDI.sendControlChange(87, 0, 13);
+   }
+   delay(100);
 
 // -----------------------------------------------------------------------------
 // Button 4
