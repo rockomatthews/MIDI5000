@@ -1,6 +1,8 @@
-# arduino
-Arduino projects in Arduino IDE with python
 
+
+# MIDI5000 Project
+
+## ReadMe Entry 1
 Trying to make customizable buttons for a WiFi MIDI controller. I call it MIDI5000. So far I have successfully utilized a esp-32 pcb board to connect to my Mac's shared internet (my mac is acting as a wireless router) via WiFi.  
 
 The Apple MIDI library then lets me connect to Mac's Audio MIDI Setup App (found within Utilities) where the board gets registered as a MIDI device that can send and receive MIDI messsages like any other MIDI controller that plugs in.
@@ -23,4 +25,19 @@ So whatever software synth it is connected to, when I press the button, if a MID
 
 That might only sound like the ability to play a single note and bend its pitch to you but that combo gives me a ton of ideas.
 
+
 This dated Sunday, the 19th of Arpil. In the year 2020 | Quarantine status- Yes
+
+
+## ReadMe Entry 2
+Now my buttons are working as planned over Wifi. Video will be added shortly
+button 1 - ON/OFF
+button 2 - ON/OFF
+button 3 - Momentary
+button 4 - NoteON/NoteOFF (F2)
+potentiometer- (tomorrow)
+
+
+This dated Tuesday, the 2st of Arpil. In the year 2020 | Quarantine status- Yes
+
+# STAY SAFE
