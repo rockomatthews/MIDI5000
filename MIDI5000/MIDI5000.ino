@@ -45,8 +45,8 @@ int currentButton2State; // the current state of button
 int lastSteady3State = LOW;       // the previous steady state from the input pin
 int lastFlickerable3State = LOW;  // the previous flickerable state from the input pin
 int led3State = LOW;     // the current state of LED
-int lastButton3State;    // the previous state of button
-int currentButton3State; // the current state of button
+int lastButton3State = LOW;  // the previous state from the input pin
+int currentButton3State;     // the current reading from the input pin
 
 // -----------------------------------------------------------------------------
 // button 4 states
@@ -70,9 +70,10 @@ void setup() {
   Serial.begin(115200);
   pinMode(button1_Pin, INPUT_PULLUP); // set arduino pin to input pull-up mode
   pinMode(LED1_PIN, OUTPUT);          // set arduino pin to output mode
-  pinMode(button2_Pin, INPUT_PULLUP); // set arduino pin to input pull-up mode
-  pinMode(LED2_PIN, OUTPUT);          // set arduino pin to output mode
-  pinMode(button3_Pin, INPUT_PULLUP); // set arduino pin to input pull-up mode
+  pinMode(button2_Pin, INPUT_PULLUP); // ""
+  pinMode(LED2_PIN, OUTPUT);          // ""
+  pinMode(button3_Pin, INPUT_PULLUP); // the pull-up input pin will be HIGH when the
+                                      // switch is open and LOW when the switch is closed.
   pinMode(LED3_PIN, OUTPUT);          // set arduino pin to output mode
   pinMode(button4_Pin, INPUT_PULLUP); // set arduino pin to input pull-up mode
   pinMode(LED4_PIN, OUTPUT);          // set arduino pin to output mode
@@ -188,27 +189,32 @@ void loop() {
 //// Button 3
 //// -----------------------------------------------------------------------------
    
-   if (currentButton3State != lastFlickerable3State) {
-     // reset the debouncing timer
-     lastDebounceTime = millis();
-     // save the the last flickerable state
-     lastFlickerable3State = currentButton3State;
-   }
+   if (currentButton2State != lastFlickerable2State) {
+      // reset the debouncing timer
+      lastDebounceTime = millis();
+      // save the the last flickerable state
+      lastFlickerable2State = currentButton2State;
+    }
     
-  lastButton3State    = currentButton3State;      // save the last state
-  currentButton3State = digitalRead(button3_Pin); // read new state
-  
-  
-  if (lastButton3State == HIGH && currentButton3State == HIGH) {
+    lastButton3State    = currentButton3State;      // save the last state 
+    currentButton3State = digitalRead(button3_Pin);
+ 
+  if(lastButton3State == HIGH && currentButton3State == LOW) {
+    Serial.println("The button is pressed");
+
     led3State = !led3State;
     digitalWrite(LED3_PIN, led3State);
     AppleMIDI.sendControlChange(87, 127, 13);
-    Serial.println("The button is active");  
-   } else {
-      Serial.println("The button is not active");  
+    } else if (lastButton3State == LOW && currentButton3State == HIGH) {
+      
+      Serial.println("The button is released");
+      led3State = !led3State;
+      digitalWrite(LED3_PIN, led3State);
       AppleMIDI.sendControlChange(87, 0, 13);
-   }
-   delay(100);
+      // save the the last state
+      lastButton3State = currentButton3State;
+    }
+  delay(100);
 
 // -----------------------------------------------------------------------------
 // Button 4
