@@ -214,41 +214,36 @@ void loop() {
       // save the the last state
       lastButton3State = currentButton3State;
     }
-  delay(100);
+  
 
 // -----------------------------------------------------------------------------
 // Button 4
 // -----------------------------------------------------------------------------
    
    if (currentButton4State != lastFlickerable4State) {
-     // reset the debouncing timer
-     lastDebounceTime = millis();
-     // save the the last flickerable state
-     lastFlickerable4State = currentButton4State;
-   }
-    
-  lastButton4State    = currentButton4State;      // save the last state
-  currentButton4State = digitalRead(button4_Pin); // read new state
-  
-  
-  if(lastButton4State == HIGH && currentButton4State == LOW) {
-    Serial.println("The button is active");
-
-    // toggle state of LED
-    led4State = !led4State;
-
-    // control LED arccoding to the toggled state
-    digitalWrite(LED4_PIN, led4State);
-    
-    if (led4State == HIGH) {
-      AppleMIDI.sendControlChange(88, 127, 13);
-      } else {
-        AppleMIDI.sendControlChange(88, 0, 13);
-        Serial.println("The button is not active");
+      // reset the debouncing timer
+      lastDebounceTime = millis();
+      // save the the last flickerable state
+      lastFlickerable4State = currentButton4State;
     }
-    delay(100);
-  }
+    
+    lastButton4State    = currentButton4State;      // save the last state 
+    currentButton4State = digitalRead(button4_Pin);
+ 
+  if(lastButton4State == HIGH && currentButton4State == LOW) {
+    Serial.println("The button is pressed");
 
+    led4State = !led4State;
+    digitalWrite(LED4_PIN, led4State);
+    AppleMIDI.sendNoteOn(53, 110, 13);
+    } else if (lastButton4State == LOW && currentButton4State == HIGH) {
+      Serial.println("The button is released");
+      led4State = !led4State;
+      digitalWrite(LED4_PIN, led3State);
+      AppleMIDI.sendNoteOff(53, 0, 13);
+      // save the the last state
+      lastButton4State = currentButton4State;
+    }
   
 }
 
