@@ -61,6 +61,11 @@ unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
 unsigned long t0 = millis();
 bool isConnected = false;
 
+float floatMap(float x, float in_min, float in_max, float out_min, float out_max) {
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+
 APPLEMIDI_CREATE_INSTANCE(WiFiUDP, AppleMIDI); // see definition in AppleMidi_Defs.h
 
 // -----------------------------------------------------------------------------
@@ -244,7 +249,23 @@ void loop() {
       // save the the last state
       lastButton4State = currentButton4State;
     }
-  
+
+// -----------------------------------------------------------------------------
+// Potentiometer
+// -----------------------------------------------------------------------------
+
+  // read the input on analog pin D14:
+  int analogValue = analogRead(D14);
+  // Rescale to potentiometer's voltage (from 0V to 3.3V):
+  float voltage = floatMap(analogValue, 0, 1023, 0, 3.3);
+
+  // print out the value you read:
+  Serial.print("Analog: ");
+  Serial.print(analogValue);
+  Serial.print(", Voltage: ");
+  Serial.println(voltage);
+  delay(1000);
+
 }
 
 // ====================================================================================
