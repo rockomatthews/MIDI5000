@@ -16,6 +16,9 @@ const int button3_Pin = 22;
 const int LED3_PIN = 23;
 const int button4_Pin = 32;
 const int LED4_PIN = 33;
+const int pot1Pin = 34;
+
+
 
 const int DEBOUNCE_DELAY = 50;   // the debounce time; increase if the output flickers
   
@@ -57,13 +60,25 @@ int led4State = LOW;     // the current state of LED
 int lastButton4State;    // the previous state of button
 int currentButton4State; // the current state of button
 
-unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
-unsigned long t0 = millis();
-bool isConnected = false;
+// -----------------------------------------------------------------------------
+// Potentiometer
+// -----------------------------------------------------------------------------
+
+int lastFlickerablePot1State = LOW;  // the previous flickerable state from the input pin
+int lastPot1State;    // the previous state of button
+int currentPot1Value; // the current state of button
 
 float floatMap(float x, float in_min, float in_max, float out_min, float out_max) {
   return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
+
+// -----------------------------------------------------------------------------
+// more variables
+// -----------------------------------------------------------------------------
+
+unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
+unsigned long t0 = millis();
+bool isConnected = false;
 
 
 APPLEMIDI_CREATE_INSTANCE(WiFiUDP, AppleMIDI); // see definition in AppleMidi_Defs.h
@@ -87,6 +102,7 @@ void setup() {
   currentButton2State = digitalRead(button2_Pin);
   currentButton3State = digitalRead(button3_Pin);
   currentButton4State = digitalRead(button4_Pin);
+  currentPot1Value = analogRead(pot1Pin);
     
   Serial.print(F("Getting IP address..."));
   
@@ -153,7 +169,7 @@ void loop() {
         AppleMIDI.sendControlChange(85, 0, 13);
         Serial.println("The button is not active");
     }
-    delay(100);
+    delay(120);
   } 
 
 // -----------------------------------------------------------------------------
@@ -186,19 +202,19 @@ void loop() {
         AppleMIDI.sendControlChange(86, 0, 13);
         Serial.println("The button is not active");
     }
-    delay(100);
+    delay(120);
   }
 
 
-//// -----------------------------------------------------------------------------
-//// Button 3
-//// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Button 3
+// -----------------------------------------------------------------------------
    
-   if (currentButton2State != lastFlickerable2State) {
+   if (currentButton3State != lastFlickerable3State) {
       // reset the debouncing timer
       lastDebounceTime = millis();
       // save the the last flickerable state
-      lastFlickerable2State = currentButton2State;
+      lastFlickerable3State = currentButton3State;
     }
     
     lastButton3State    = currentButton3State;      // save the last state 
@@ -254,19 +270,28 @@ void loop() {
 // Potentiometer
 // -----------------------------------------------------------------------------
 
-  // read the input on analog pin D14:
-  int analogValue = analogRead(D14);
-  // Rescale to potentiometer's voltage (from 0V to 3.3V):
-  float voltage = floatMap(analogValue, 0, 1023, 0, 3.3);
+      if (currentPot1Value != lastFlickerablePot1State) {
+      // reset the debouncing timer
+      lastDebounceTime = millis();
+      // save the the last flickerable state
+      lastFlickerablePot1State = currentPot1Value;
+    }
 
-  // print out the value you read:
-  Serial.print("Analog: ");
-  Serial.print(analogValue);
-  Serial.print(", Voltage: ");
-  Serial.println(voltage);
-  delay(1000);
+  lastPot1State = currentPot1Value;      // save the last state
+  int currentPot1Value = analogRead(A6);
+  // Rescale to potentiometer's voltage (from 0V to 3.3V):
+  float pot1Value = floatMap(currentPot1Value, 0,106, 0, 3.3);
+  int pot1MIDIValue = round(pot1Value);
+
+  if (currentButton4State == LOW) {
+    AppleMIDI.sendControlChange(89, pot1MIDIValue, 13);
+    lastPot1State = currentPot1Value;
+  }
+  delay(100);
 
 }
+
+
 
 // ====================================================================================
 // Event handlers for incoming MIDI messages
