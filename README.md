@@ -2,6 +2,25 @@
 
 # MIDI5000 Project
 
+## ReadMe Entry 5000 (previously referred to as ReadMe Entry 4) 
+The project has alas hit a milestone. MIDI5000 works as expected. I made 4 MIDI buttons and 1 potentiometer control any aspect of a DAW over WiFi with zero latency. The project uses an esp32 PCB board and was coded with the Arduino IDE.
+
+I could easily have easily created 4 times the amount of controls but my need was specific. I only wanted 4 buttons and 1 potetiometer because that's all that I had room for on my guitar. I used the tiniest of boards I could find too because, in a case like this where dealing with very little room (the area under a guitar's pickup guard that is already cramped), less is more. Here is a video of a tiny board controlling Abelton LIVE on a Mac over Wifi. This could fit in my guitar without much effort and is mimics the start of "My Name Is Thunder" by The Bloody Beetroots.
+
+
+-First the board connects to WiFi shared from my MacBook Pro.
+-Once connected (turned on/given battery power) it comes up as a virtual instrument in the Audio MIDI Setup App located in Utilities on a Mac.
+-This means my computer is recognizing it as if it were a controller or keyboard plugged in with a MIDI cord.
+-The easiest way to make this as customizable as possible was to keep the logic to the lights associated with the buttons. 
+-Only under certain circumstances are MIDI messages sent. MIDI's language is incredibly simple and versatile.  
+
+A next step this project could take would be utilizing the MIDI Designer Pro 2 App on an iPhone. This could make the buttons completely customizable without having to edit the code. 
+
+And/Or the Mac App MIDIStroke could be used to take the buttons a step further and control any on my Mac.  MIDIStroke converts MIDI messages (a channel, a value) into a keystroke.  That means the buttons could control anything that uses a hotkey. 
+
+To push past that, Alfred Mac app could assign triggers to any of the above keystrokes to command my Mac to do any workflow imaginable... 
+
+
 ## ReadMe Entry 1
 Trying to make customizable buttons for a WiFi MIDI controller. I call it MIDI5000. So far I have successfully utilized a esp-32 pcb board to connect to my Mac's shared internet (my mac is acting as a wireless router) via WiFi.  
 
@@ -41,3 +60,6 @@ potentiometer- (tomorrow)
 This dated Tuesday, the 2st of Arpil. In the year 2020 | Quarantine status- Yes
 
 # STAY SAFE
+
+## ReadMe Entry 3 
+Milestone hit. Please refer to the top for ##ReadME Entry 4
