@@ -7,7 +7,7 @@ The project has alas hit a milestone. MIDI5000 works as expected. I made 4 MIDI 
 
 I could easily have easily created 4 times the amount of controls but my need was specific. I only wanted 4 buttons and 1 potetiometer because that's all that I had room for on my guitar. I used the tiniest of boards I could find too because, in a case like this where dealing with very little room (the area under a guitar's pickup guard that is already cramped), less is more. Here is a video of a tiny board controlling Abelton LIVE on a Mac over Wifi. This could fit in my guitar without much effort and is mimics the start of "My Name Is Thunder" by The Bloody Beetroots.
 
-[![controller](https://imgur.com/a/HnJv3Rc)](https://www.youtube.com/watch?v=WkeB3Opa6Q4 "esp-32 buttons with a potentiometer controlling Ableton LIVE via MIDI")
+[![controller](https://imgur.com/9ytHnLH)](https://www.youtube.com/watch?v=WkeB3Opa6Q4 "esp-32 buttons with a potentiometer controlling Ableton LIVE via MIDI")
 
 -First the board connects to WiFi shared from my MacBook Pro.
 -Once connected (turned on/given battery power) it comes up as a virtual instrument in the Audio MIDI Setup App located in Utilities on a Mac.
